@@ -4,3 +4,6 @@ pypdf
 langchain
 streamlit
 faiss-cpu
+langchain_community
+langchain_aws
+langchain-text-splitters
