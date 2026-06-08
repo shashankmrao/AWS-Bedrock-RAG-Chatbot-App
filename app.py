@@ -2,9 +2,10 @@ import json
 import os
 import sys
 import boto3
+import logging
 import streamlit as st
 
-from langchain_community.embeddings import BedrockEmbeddings
+from langchain_aws import BedrockEmbeddings
 from langchain_aws import BedrockLLM
 
 import numpy as np
@@ -14,11 +15,20 @@ from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_community.vectorstores import FAISS
 
 from langchain_core.prompts import PromptTemplate
-from langchain_classic.chains import retrieval_qa
+from botocore.exceptions import ClientError
+
+from langchain_classic.chains import create_retrieval_chain
+from langchain_classic.chains.combine_documents import (
+    create_stuff_documents_chain,
+)
+from langchain_core.prompts import ChatPromptTemplate
+
+logger = logging.getLogger("Bedrock-RAG")
+logging.basicConfig(level=logging.INFO)
 
 
-bedrock=boto3.client(service_name="bedrock_runtime")
-bedrock_embeddings=BedrockEmbeddings(model_id="amazon.titan-embed-text-v1",client=bedrock)
+bedrock=boto3.client(service_name="bedrock-runtime",region_name="us-east-1")
+bedrock_embeddings=BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0",client=bedrock)
 
 def data_ingestion():
     loader=PyPDFDirectoryLoader("data")
@@ -32,49 +42,55 @@ def data_ingestion():
     return docs
 
 def get_vector_store(docs):
-    vectorstore_faiss=FAISS.from_documents(
+    try:
+        vectorstore_faiss=FAISS.from_documents(
         docs,
         bedrock_embeddings
-    )
+        )
+    except ClientError as err:
+        message = err.response["Error"]["Message"]
+        logger.error("A client error occurred: %s", message)
+        print("A client error occured: " +
+              format(message))
 
     vectorstore_faiss.save_local("faiss_index")
 
-def get_llama_llm():
+def get_llm():
     llm= BedrockLLM(
-        model_id="meta.llama2-70b-chat-v1",
+        model_id="meta.llama3-8b-instruct-v1:0",
         client=bedrock)
     return llm
 
+
 prompt_template = """
-Human: Use the following pieces of context to provide a 
-concise answer to the question at the end but usse atleast summarize with 
-250 words with detailed explaantions. If you don't know the answer, 
-just say that you don't know, don't try to make up an answer.
+You are a helpful tourist guide assistant who will use the following context
+to give a concise 100 worded answer or less to the question asked at the end.
+If you don't know the answer, just say that you don't know, don't try to make up an answer.
 Context:
 {context}
 
-Question: {question}
+
+Question: {input}
+
 Assistant:"""
 
 PROMPT = PromptTemplate(
-    template=prompt_template,
-    input_variables=["context","question"]
+    template=prompt_template, input_variables=["context", "input"]
 )
 
 def get_response_llm(llm,vectorstore_faiss,query):
-    qa = retrieval_qa(
-        llm=llm,
-        chain_type="stuff",
-        retriever=vectorstore_faiss.as_retriever(
+    question_answer_chain = create_stuff_documents_chain(llm=llm, prompt=PROMPT)
+    retriever=vectorstore_faiss.as_retriever(
             search_type="similarity",
-            search_kwargs={"k":3}
-        ),
-        return_source_documents=True,
-        chain_type_kwargs={"prompt":PROMPT}
-
-    )
-    answer=qa({"query":query})
-    return answer['result']
+            search_kwargs={"k":2})
+    chain = create_retrieval_chain(retriever,
+            question_answer_chain)
+    try:
+        response=chain.invoke({"input": query})
+    except (ClientError, Exception) as e:
+        print(f"ERROR: Can't invoke model. Reason: {e}")
+        exit(1)
+    return response['answer']
 
 def main():
     st.set_page_config("Chat PDF")
@@ -93,15 +109,14 @@ def main():
 
     if st.button("Generate Output"):
         with st.spinner("Processing..."):
-            faiss_index=FAISS.load_local("faiss_index",bedrock_embeddings)
-            llm=get_llama_llm()
+            faiss_index=FAISS.load_local("faiss_index",bedrock_embeddings,allow_dangerous_deserialization=True)
+            llm=get_llm()
 
             st.write(get_response_llm(llm,faiss_index,user_question))
             st.success("Done")
 
 if __name__=="__main__":
     main()
-
 
 
 

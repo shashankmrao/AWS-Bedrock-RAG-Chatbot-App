@@ -1,9 +1,11 @@
 boto3
+botocore
 awscli
 pypdf
 langchain
 streamlit
 faiss-cpu
-langchain_community
-langchain_aws
+langchain-community
+langchain-aws
 langchain-text-splitters
+langchain-classic
