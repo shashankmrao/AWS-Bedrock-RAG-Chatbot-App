@@ -52,7 +52,7 @@ PROMPT = PromptTemplate(
 def get_response_llm(llm,query):
     question_answer_chain = create_stuff_documents_chain(llm=llm, prompt=PROMPT)
     retriever = AmazonKnowledgeBasesRetriever(
-    knowledge_base_id="TSMZEBHADH",
+    knowledge_base_id="XXXXXXXX",
     retrieval_config={"vectorSearchConfiguration": {"numberOfResults": 2}},
     )
     chain = create_retrieval_chain(retriever,
