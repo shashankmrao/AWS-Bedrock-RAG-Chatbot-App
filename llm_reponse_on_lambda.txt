@@ -1,0 +1,29 @@
+{'input': 'What are the best places to visit in India?', 
+  'context': [Document
+                (metadata=
+                    {'location': 
+                        {'s3Location': 
+                            {'uri': 's3://tourist-guide-test-pdf/India Travel Guide.docx'},
+                         'type': 'S3'
+                        }, 
+                     'score': 0.7582853, 
+                     'type': 'TEXT', 
+                     'source_metadata': 
+                        {'x-amz-bedrock-kb-source-uri': 's3://tourist-guide-test-pdf/India Travel Guide.docx', 'x-amz-bedrock-kb-source-file-modality': 'TEXT', 'x-amz-bedrock-kb-chunk-id': '1%3A0%3AyMzop54BGnXY3u4YIjm5', 'x-amz-bedrock-kb-data-source-id': 'HJWJVPGPKB'}
+                    }, 
+                 page_content='Also in 2019, I founded\\xa0India for Beginners custom tours\\xa0in Delhi. India for Beginners is owned and operated by Breathedreamgo India Pvt Ltd., incorporated in India in July 2020.  Where are the best places to visit in India?  The\\xa0best places to visit in India\\xa0are the ones that call you. They may or may not be the most well-known. Many people feel they have to visit the Golden Triangle – Delhi, Agra for the Taj Mahal, and Jaipur – on their first trip to India. But you don’t. India has amazing places all over the country, some of which are not well publicized.  India is called a subcontinent because of the vast range of landscape, geography, and climate. Within the borders of India, you can find the soaring snow-capped peaks of the Himalayas, the desert state of\\xa0Rajasthan, the lush rainforests of South India, the tropical beaches of Goa, Kerala, Karnataka, and other states, and the jungles of central India, where tigers roam. You can travel in India throughout the year, following the seasons and climate, and never get bored.\\xa0India is also home to many UNESCO World Heritage sites. You could literally travel around the country visiting incredible heritage sites.\\xa0  We recommend following the weather when you travel in India, as weather can be extreme.'
+                ), 
+              Document
+                (metadata=
+                    {'location': 
+                        {'s3Location': 
+                            {'uri': 's3://tourist-guide-test-pdf/India Travel Guide.docx'}, 
+                            'type': 'S3'
+                        }, 
+                        'score': 0.7474743, 
+                        'type': 'TEXT', 
+                        'source_metadata': {'x-amz-bedrock-kb-source-uri': 's3://tourist-guide-test-pdf/India Travel Guide.docx', 'x-amz-bedrock-kb-source-file-modality': 'TEXT', 'x-amz-bedrock-kb-chunk-id': '1%3A0%3Ayczop54BGnXY3u4YIjm5', 'x-amz-bedrock-kb-data-source-id': 'HJWJVPGPKB'}
+                    }, 
+                 page_content='You could literally travel around the country visiting incredible heritage sites.\\xa0  We recommend following the weather when you travel in India, as weather can be extreme. Check out this post\\xa0The 24 Best places to visit in India by month.    What are the best destinations and tourist attractions in India?  There are so many amazing destinations and tourist attractions to choose from, it’s actually hard to know where to begin. A lot of it will depend on your interests. Most people start in the major cities. Make sure you read my extensive\\xa0Travel Guide to Delhi\\xa0if you land in the capital to begin your trip. Mumbai is an incredible city to visit, and I also love Varanasi, Amritsar, Rishikesh, Udaipur, and Jaisalmer.  Along with an incredible diversity of landscape and climate, India is also incredibly diverse in terms of culture, so I would recommend getting to several different states. They are literally as different from each other as European countries are. My favourite states are Uttarakhand, Rajasthan,\\xa0Madhya Pradesh, and\\xa0Kerala. But of course I also like Goa, Punjab, Karnataka, Tamil Nadu, Himachal Pradesh, West Bengal, Sikkim, Gujarat,\\xa0Ladakh, and Odisha. The rest I need to get to!')
+                ], 
+    'answer': " India is a vast and diverse country with a wide range of landscapes, climates, and cultures. The best places to visit in India are those that call you, and they may or may not be the most well-known. From the snow-capped Himalayas to the tropical beaches of Goa and Kerala, and from the desert state of Rajasthan to the lush rainforests of South India, there are many incredible destinations to choose from. Some popular tourist attractions include the Golden Triangle, the Taj Mahal, and the cities of Delhi, Mumbai, and Varanasi. However, it's also worth exploring the lesser-known states and cities, such as Uttarakhand, Madhya Pradesh, and Sikkim. Ultimately, the best places to visit in India are those that align with your interests and preferences."}
